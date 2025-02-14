@@ -1,19 +1,25 @@
 package id.ac.ui.cs.advprog.eshop.repository;
+
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
 public class ProductRepositoryTest {
     @InjectMocks
     ProductRepository productRepository;
+
     @BeforeEach
     void setUp() {
     }
+
     @Test
     void testCreateAndFind() {
         Product product = new Product();
@@ -28,11 +34,13 @@ public class ProductRepositoryTest {
         assertEquals(savedProduct.getProductName(), product.getProductName());
         assertEquals(savedProduct.getProductQuantity(), product.getProductQuantity());
     }
+
     @Test
     void testFindAllIfEmpty() {
         Iterator<Product> productIterator = productRepository.findAll();
         assertFalse(productIterator.hasNext());
     }
+
     @Test
     void testFindAllIfMoreThanOneProduct() {
         Product product1 = new Product();
@@ -52,5 +60,37 @@ public class ProductRepositoryTest {
         savedProduct = productIterator.next();
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testEditProduct() {
+        Product product = new Product("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang", 100);
+        productRepository.create(product);
+        Product updatedProduct = new Product("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang Updated", 150);
+        Product result = productRepository.update(updatedProduct);
+        assertNotNull(result);
+        assertEquals("Sampo Cap Bambang Updated", result.getProductName());
+        assertEquals(150, result.getProductQuantity());
+    }
+
+    @Test
+    void testEditProduct_NotFound() {
+        Product updatedProduct = new Product("non-existing-id", "Non Existing Product", 200);
+        Product result = productRepository.update(updatedProduct);
+        assertNull(result);
+    }
+
+    @Test
+    void testDeleteProduct() {
+        Product product = new Product("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang", 100);
+        productRepository.create(product);
+        productRepository.delete("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testDeleteProduct_NotFound() {
+        assertDoesNotThrow(() -> productRepository.delete("non-existing-id"));
     }
 }
