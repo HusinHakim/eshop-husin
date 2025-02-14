@@ -2,9 +2,11 @@ package id.ac.ui.cs.advprog.eshop.controller;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.service.ProductService;
+//import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +26,11 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProductPost(@ModelAttribute Product product) {
+    public String createProductPost( @ModelAttribute Product product, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
+            return "createProduct"; // Kembali ke form jika ada error
+        }
         service.create(product);
         return "redirect:/product/list";
     }
@@ -37,12 +43,12 @@ public class ProductController {
 
     @GetMapping("/edit/{id}")
     public String editProductPage(@PathVariable("id") String productId, Model model) {
-        Optional<Product> product = service.findById(productId);
-        if (product.isPresent()) {
-            model.addAttribute("product", product.get());
-            return "editProduct";
+        Product existingProduct = service.findById(productId);
+        if (existingProduct == null) {
+            return "redirect:/product/list";
         }
-        return "redirect:/product/list";
+        model.addAttribute("product", existingProduct);
+        return "editProduct";
     }
 
     @PostMapping("/edit")
