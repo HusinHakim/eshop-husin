@@ -88,6 +88,19 @@ public class ProductRepositoryTest {
     @Test
     void testEditNonExistentProduct() {
         Product product = new Product();
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product product2 = new Product();
+
+        Product editedProduct = productRepository.edit(product2);
+        assertNull(editedProduct);
+    }
+
+    @Test
+    void testEditNonExistentProductList() {
+        Product product = new Product();
         product.setProductId("0");
         product.setProductName("Sampo Cap Bambang");
         product.setProductQuantity(100);
