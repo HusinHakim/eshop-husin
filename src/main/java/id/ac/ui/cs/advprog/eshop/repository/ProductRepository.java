@@ -9,37 +9,50 @@ import java.util.List;
 
 @Repository
 public class ProductRepository {
-    private final List<Product> productData = new ArrayList<>();
+
+    private List<Product> productData = new ArrayList<>();
+
+    private static int idCounter;
 
     public Product create(Product product) {
+        product.setProductId(String.valueOf(idCounter++));
         productData.add(product);
         return product;
     }
 
-    public Iterator<Product> findAll() {
-        return productData.iterator();
-    }
-
-    public Product findById(String productId) {
+    public Product edit(Product updatedProduct) {
         for (Product product : productData) {
-            if (product.getProductId().equals(productId)) {
-                return product;
-            }
-        }
-        return null;
-    }
-
-    public Product update(Product updatedProduct) {
-        for (int i = 0; i < productData.size(); i++) {
-            if (productData.get(i).getProductId().equals(updatedProduct.getProductId())) {
-                productData.set(i, updatedProduct);
+            if (product.getProductId().equals(updatedProduct.getProductId())) {
+                updatedProduct.setProductId(product.getProductId());
+                int index = productData.indexOf(product);
+                productData.set(index, updatedProduct);
                 return updatedProduct;
             }
         }
         return null;
     }
 
-    public void delete(String productId) {
-        productData.removeIf(product -> product.getProductId().equals(productId));
+    public Product findProductById(String id) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(id)) {
+                return product;
+            }
+        }
+        return null;
     }
+
+    public boolean delete(String id) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(id)) {
+                productData.remove(product);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Iterator<Product> findAll() {
+        return productData.iterator();
+    }
+
 }

@@ -12,34 +12,42 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private final ProductRepository productRepository;
+
     @Autowired
-    private ProductRepository productRepository;
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public Product create(Product product) {
-        return productRepository.create(product);
+        productRepository.create(product);
+        return product;
     }
 
     @Override
     public List<Product> findAll() {
         Iterator<Product> productIterator = productRepository.findAll();
-        List<Product> allProduct = new ArrayList<>();
-        productIterator.forEachRemaining(allProduct::add);
-        return allProduct;
+        List<Product> allProducts = new ArrayList<>();
+        productIterator.forEachRemaining(allProducts::add);
+        return allProducts;
     }
 
     @Override
-    public Product findById(String productId) {
-        return productRepository.findById(productId);
+    public Product edit(Product product) {
+        productRepository.edit(product);
+        return product;
     }
 
     @Override
-    public Product update(Product product) {
-        return productRepository.update(product);
+    public Product findProductById(String id) {
+        Product product = productRepository.findProductById(id);
+        return product;
     }
 
     @Override
-    public void delete(String productId) {
-        productRepository.delete(productId);
+    public boolean delete(String id) {
+        return productRepository.delete(id);
     }
+
 }
