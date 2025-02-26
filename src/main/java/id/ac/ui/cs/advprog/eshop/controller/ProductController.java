@@ -44,7 +44,7 @@ public class ProductController {
     public String editProductPage(@PathVariable("id") String productId, Model model) {
         Product product = service.findProductById(productId);
         model.addAttribute("product", product);
-        return "EditProduct";
+        return "editProduct";
     }
 
     @PostMapping("/edit/{id}")
