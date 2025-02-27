@@ -10,7 +10,7 @@ public interface ProductService {
 
     public List<Product> findAll();
 
-    public Product edit(Product product);
+    public Product edit(Product productId);
 
     public Product findProductById(String id);
 
