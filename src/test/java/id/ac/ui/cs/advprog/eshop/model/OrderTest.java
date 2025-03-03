@@ -79,15 +79,6 @@ public class OrderTest {
         assertEquals("CANCELLED", order.getStatus());
     }
     
-    @Test
-    void testSetStatusToInvalid() {
-        Order order = new Order("13652656-012a-4c07-b546-54eb1396d79b",
-            this.products, 1708560000L, "Safira Sudrajat");
-        order.setStatus("INVALID_STATUS");
-        
-        // Status should remain unchanged (WAITING_PAYMENT)
-        assertEquals("WAITING_PAYMENT", order.getStatus());
-    }
     
     @Test
     void testSetStatusToInvalidStatus() {
