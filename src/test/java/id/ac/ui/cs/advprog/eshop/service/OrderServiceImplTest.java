@@ -38,12 +38,12 @@ class OrderServiceImplTest {
         products.add(product1);
         
         orders = new ArrayList<>();
-        Order order1 = new Order(id: "13652656-012a-4c07-b546-54eb1396d79b",
-            products, orderTime: 1708560000L, author: "Safira Sudrajat");
+        Order order1 = new Order("13652656-012a-4c07-b546-54eb1396d79b",
+            products, 1708560000L, "Safira Sudrajat");
         orders.add(order1);
         
-        Order order2 = new Order(id: "7f9e15bb-4b15-42f4-aebc-c3af385fb078",
-            products, orderTime: 1708570000L, author: "Safira Sudrajat");
+        Order order2 = new Order("7f9e15bb-4b15-42f4-aebc-c3af385fb078",
+            products, 1708570000L, "Safira Sudrajat");
         orders.add(order2);
     }
     
@@ -97,7 +97,7 @@ class OrderServiceImplTest {
         doReturn(null).when(orderRepository).findById("zzzz");
         
         assertThrows(NoSuchElementException.class,
-            () -> orderService.updateStatus(orderId: "zzzz", OrderStatus.SUCCESS.getValue()));
+            () -> orderService.updateStatus("zzzz", OrderStatus.SUCCESS.getValue()));
         
         verify(orderRepository, times(0)).save(any(Order.class));
     }
@@ -114,7 +114,7 @@ class OrderServiceImplTest {
     @Test
     void testFindByIdIfNotFound() {
         doReturn(null).when(orderRepository).findById("zzzz");
-        assertNull(orderService.findById(orderId: "zzzz"));
+        assertNull(orderService.findById("zzzz"));
     }
     
     @Test
