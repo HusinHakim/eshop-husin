@@ -88,4 +88,13 @@ class OrderRepositoryTest {
                 orders.get(1).getAuthor());
         assertEquals(2, orderList.size());
     }
+
+    @Test
+    void testFindAllByAuthorIfAllLowercase() {
+        orderRepository.save(orders.get(1));
+
+        List<Order> orderList = orderRepository.findAllByAuthor(
+                orders.get(1).getAuthor().toLowerCase());
+        assertEquals(2, orderList.size());  
+    }
 }
