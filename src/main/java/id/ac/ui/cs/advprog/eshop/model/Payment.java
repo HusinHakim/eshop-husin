@@ -14,46 +14,50 @@ public class Payment {
     }
 
     public Payment(String id, Order order, String method, String status, Map<String, String> paymentData) {
-        // Constructor with parameters
+        this.id = id;
+        this.order = order;
+        this.method = method;
+        this.status = status;
+        this.paymentData = paymentData;
     }
 
     public String getId() {
-        return null;
+        return id;
     }
 
     public void setId(String id) {
-        // Set id
+        this.id = id;
     }
 
     public Order getOrder() {
-        return null;
+        return order;
     }
 
     public void setOrder(Order order) {
-        // Set order
+        this.order = order;
     }
 
     public String getMethod() {
-        return null;
+        return method;
     }
 
     public void setMethod(String method) {
-        // Set method
+        this.method = method;
     }
 
     public String getStatus() {
-        return null;
+        return status;
     }
 
     public void setStatus(String status) {
-        // Set status
+        this.status = status;
     }
 
     public Map<String, String> getPaymentData() {
-        return null;
+        return paymentData;
     }
 
     public void setPaymentData(Map<String, String> paymentData) {
-        // Set paymentData
+        this.paymentData = paymentData;
     }
-} 
+}
