@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repository untuk menyimpan dan mengelola data Payment
+ */
 @Repository
 public class PaymentRepository {
     private List<Payment> paymentData = new ArrayList<>();
@@ -20,6 +23,10 @@ public class PaymentRepository {
     }
 
     public Payment findById(String id) {
+        if (id == null || id.isEmpty()) {
+            return null;
+        }
+        
         for (Payment payment : paymentData) {
             if (payment.getId().equals(id)) {
                 return payment;
