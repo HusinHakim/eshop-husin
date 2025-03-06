@@ -28,7 +28,6 @@ class PaymentServiceTest {
     @Mock
     private OrderService orderService;
 
-    @InjectMocks
     private PaymentServiceImpl paymentService;
 
     private Order mockOrder;
@@ -53,10 +52,13 @@ class PaymentServiceTest {
 
     @BeforeEach
     void setUp() {
+        // Inisialisasi paymentService secara manual
+        paymentService = new PaymentServiceImpl(paymentRepository, orderService);
+        
         mockOrder = Order.builder().id("787c1e14-8383-4308-b2d5-f924b9d588b8")
                 .products(getProducts())
                 .orderTime(1708560000L)
-                .author("Syauqi")
+                .author("Husin")
                 .status(OrderStatus.WAITING_PAYMENT.getValue())
                 .build();
 
@@ -64,8 +66,8 @@ class PaymentServiceTest {
         voucherCodePayment.put("voucherCode", "VOUCHER12345678901");
 
         cashOnDeliveryPayment = new HashMap<>();
-        cashOnDeliveryPayment.put("address", "Jalan Margonda Raya No. 100");
-        cashOnDeliveryPayment.put("deliveryFee", "15000");
+        cashOnDeliveryPayment.put("address", "Rawajati Barat V No. 35");
+        cashOnDeliveryPayment.put("deliveryFee", "30000");
 
         mockPayment = new Payment();
         mockPayment.setId("payment-123");
@@ -78,6 +80,7 @@ class PaymentServiceTest {
     @Test
     void testAddPaymentVoucherCode() {
         when(paymentRepository.save(any(Payment.class))).thenReturn(mockPayment);
+        
 
         Payment payment = paymentService.addPayment(mockOrder, PaymentMethod.VOUCHER_CODE, voucherCodePayment);
 
@@ -102,8 +105,8 @@ class PaymentServiceTest {
 
         assertNotNull(payment);
         assertEquals(PaymentMethod.CASH_ON_DELIVERY.getValue(), payment.getMethod());
-        assertEquals("Jalan Margonda Raya No. 100", payment.getPaymentData().get("address"));
-        assertEquals("15000", payment.getPaymentData().get("deliveryFee"));
+        assertEquals("Rawajati Barat V No. 35", payment.getPaymentData().get("address"));
+        assertEquals("30000", payment.getPaymentData().get("deliveryFee"));
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
@@ -111,6 +114,7 @@ class PaymentServiceTest {
     void testSetStatus() {
         when(paymentRepository.findById(anyString())).thenReturn(mockPayment);
         when(paymentRepository.save(any(Payment.class))).thenReturn(mockPayment);
+        
 
         Payment updatedPayment = paymentService.setStatus("payment-123", PaymentStatus.SUCCESS);
 
@@ -118,6 +122,7 @@ class PaymentServiceTest {
         assertEquals(PaymentStatus.SUCCESS.getValue(), updatedPayment.getStatus());
         verify(paymentRepository, times(1)).findById(anyString());
         verify(paymentRepository, times(1)).save(any(Payment.class));
+        verify(orderService, times(1)).updateStatus(anyString(), anyString());
     }
 
     @Test
@@ -166,8 +171,8 @@ class PaymentServiceTest {
     @Test
     void testCashOnDeliveryValidation() {
         Map<String, String> validCOD = new HashMap<>();
-        validCOD.put("address", "Jalan Margonda Raya No. 100");
-        validCOD.put("deliveryFee", "15000");
+        validCOD.put("address", "Rawajati Barat V No. 35");
+        validCOD.put("deliveryFee", "30000");
         
         Map<String, String> invalidCOD = new HashMap<>();
         invalidCOD.put("address", "");
