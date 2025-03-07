@@ -207,3 +207,65 @@ Tanpa pemisahan tanggung jawab, kode jadi dibaca dan dipahami orang lain. Ini bi
 ---
 
 Dengan menerapkan prinsip SOLID, saya merasakan langsung manfaatnya dalam pengembangan proyek ini. Kode jadi lebih terstruktur, mudah dipelihara, dan siap untuk dikembangkan lebih lanjut di masa depan.
+
+# Refleksi Implementasi Test-Driven Development (TDD)
+
+## Refleksi TDD Workflow berdasarkan Percival (2017)
+
+
+### Apakah TDD Flow Cukup Berguna?
+
+TDD flow yang saya ikuti (RED-GREEN-REFACTOR) sangat berguna dalam pengembangan fitur Payment. Berikut beberapa alasan:
+
+1. **Kejelasan Tujuan**: Dengan menulis test terlebih dahulu (RED), saya memiliki gambaran yang jelas tentang apa yang harus dicapai oleh kode yang akan saya tulis. Ini membantu saya fokus pada fungsionalitas yang dibutuhkan.
+
+2. **Deteksi Bug Lebih Awal**: Ketika mengimplementasikan `PaymentServiceImpl`, beberapa bug terdeteksi segera setelah menjalankan test, seperti masalah dengan validasi voucher dan NullPointerException pada `orderService`. Ini memungkinkan saya untuk memperbaikinya lebih awal.
+
+3. **Refactoring dengan Percaya Diri**: Setelah mencapai fase GREEN, saya bisa melakukan refactoring dengan percaya diri karena memiliki test yang memastikan fungsionalitas tetap berjalan dengan benar.
+
+4. **Dokumentasi Kode**: Test yang saya tulis juga berfungsi sebagai dokumentasi yang menjelaskan bagaimana kode seharusnya bekerja, seperti validasi voucher dan cash on delivery.
+
+### Hal yang Perlu Ditingkatkan
+
+Meskipun TDD flow sangat berguna, ada beberapa hal yang perlu saya tingkatkan di masa depan:
+
+1. **Granularitas Test**: Beberapa test yang saya buat terlalu besar dan mencakup terlalu banyak fungsionalitas. Di masa depan, saya akan membuat test yang lebih kecil dan fokus pada satu aspek fungsionalitas.
+
+2. **Mocking yang Lebih Baik**: Saya mengalami kesulitan dengan mocking `OrderService` yang menyebabkan NullPointerException. Di masa depan, saya perlu lebih memahami cara mocking dependency dengan benar.
+
+3. **Edge Cases**: Saya perlu lebih memperhatikan edge cases dalam test, seperti input yang tidak valid atau kondisi khusus yang mungkin terjadi.
+
+## Evaluasi Prinsip F.I.R.S.T. dalam Unit Test
+
+Prinsip F.I.R.S.T. (Fast, Isolated, Repeatable, Self-validating, Timely) adalah panduan untuk membuat unit test yang baik. Berikut evaluasi test yang saya buat:
+
+### Fast
+
+Test yang saya buat berjalan cukup cepat karena menggunakan mocking untuk dependency seperti `PaymentRepository` dan `OrderService`, sehingga tidak perlu mengakses database atau layanan eksternal. Namun, beberapa test masih bisa dioptimalkan untuk berjalan lebih cepat.
+
+### Isolated
+
+Test saya cukup terisolasi karena setiap test memiliki setup sendiri dan tidak bergantung pada hasil test lain. Namun, ada beberapa test yang masih berbagi state melalui variabel instance seperti `mockOrder` dan `mockPayment`. Di masa depan, saya akan membuat test yang lebih terisolasi dengan setup yang lebih spesifik untuk setiap test.
+
+### Repeatable
+
+Test saya repeatable karena tidak bergantung pada kondisi eksternal seperti database atau layanan eksternal. Semua dependency di-mock, sehingga test akan selalu memberikan hasil yang sama setiap kali dijalankan.
+
+### Self-validating
+
+Test saya self-validating karena menggunakan assertions untuk memvalidasi hasil. Setiap test memiliki assertion yang jelas tentang apa yang diharapkan, seperti status pembayaran atau nilai yang dikembalikan oleh method.
+
+### Timely
+
+Test saya timely karena ditulis sebelum implementasi kode (sesuai dengan prinsip TDD). Ini membantu saya memahami kebutuhan dan merancang interface yang baik sebelum menulis kode implementasi.
+
+### Hal yang Perlu Ditingkatkan
+
+Beberapa hal yang perlu saya tingkatkan dalam penerapan prinsip F.I.R.S.T.:
+
+1. **Lebih Isolated**: Mengurangi ketergantungan antar test dengan membuat setup yang lebih spesifik untuk setiap test.
+
+2. **Lebih Fast**: Mengoptimalkan test agar berjalan lebih cepat, terutama untuk test yang kompleks.
+
+3. **Lebih Self-validating**: Membuat assertion yang lebih spesifik dan jelas tentang apa yang diharapkan dari test.
+
